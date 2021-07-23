@@ -72,10 +72,18 @@ function showDelete(reqId){
         req.send();
     }
 }
+
+
+function updateReport(reqId){
+    $('#update_report_model').modal('toggle');
+}
+
+
 function actionLinks(ps, es, id) {
     return (ps === 'COMPLETED'?"<a onclick='downloadPDF(\""+id+"\")' href='#'>Download PDF</a>":"")
         + (es === 'COMPLETED'?"<a onclick='downloadExcel(\""+id+"\")' style='margin-left: 1em' href='#'>Download Excel</a>":"")
-        +"<a onclick='showDelete(\""+id+"\")' style='margin-left: 1em' href='#'>Delete</a>";
+        +"<a onclick='showDelete(\""+id+"\")' style='margin-left: 1em' href='#'>Delete</a>"
+        +"<a onclick='updateReport(\""+id+"\")' style='margin-left: 1em' href='#'>Update</a>";
 }
 function validateInput(){
     try {
