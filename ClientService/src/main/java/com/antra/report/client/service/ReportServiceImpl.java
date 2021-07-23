@@ -194,4 +194,9 @@ public class ReportServiceImpl implements ReportService {
         }
         return null;
     }
+
+    @Override
+    public void deleteRequest(String reqId) {
+        reportRequestRepo.deleteById(reqId);
+    }
 }
