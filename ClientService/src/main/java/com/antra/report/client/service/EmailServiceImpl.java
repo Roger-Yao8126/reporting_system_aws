@@ -23,7 +23,7 @@ public class EmailServiceImpl implements EmailService{
         String emailBody = emailTemplate.replace("%NAME%", submitter);
         Email email = new Email();
         email.setTo(to);
-        email.setFrom("do_not_reply@antra.com");
+        email.setFrom("yxj8126@gmail.com");
         email.setSubject("We did it!");
         email.setBody(emailBody);
         email.setToken("12345");
