@@ -84,7 +84,7 @@ public class ReportServiceImpl implements ReportService {
         RestTemplate rs = new RestTemplate();
 //        ExcelResponse excelResponse = new ExcelResponse();
 //        PDFResponse pdfResponse = new PDFResponse();
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        ExecutorService executorService = Executors.newFixedThreadPool(2);  // if declare
         executorService.execute(() -> {
             ExcelResponse excelResponse = new ExcelResponse();
             try {

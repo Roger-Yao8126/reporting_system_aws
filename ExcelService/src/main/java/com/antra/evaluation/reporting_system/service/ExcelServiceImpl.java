@@ -22,20 +22,21 @@ import java.util.stream.Collectors;
 public class ExcelServiceImpl implements ExcelService {
 
     private static final Logger log = LoggerFactory.getLogger(ExcelServiceImpl.class);
-
-    ExcelRepository excelRepository;
-
+    @Autowired
+    private ExcelRepository excelRepository;
+    @Autowired
     private ExcelGenerationService excelGenerationService;
 
-    @Autowired
-    public ExcelServiceImpl(ExcelRepository excelRepository, ExcelGenerationService excelGenerationService) {
-        this.excelRepository = excelRepository;
-        this.excelGenerationService = excelGenerationService;
-    }
+
+//    public ExcelServiceImpl(ExcelRepository excelRepository, ExcelGenerationService excelGenerationService) {
+//        this.excelRepository = excelRepository;
+//        this.excelGenerationService = excelGenerationService;
+//    }
 
     @Override
     public InputStream getExcelBodyById(String id) throws FileNotFoundException {
-        Optional<ExcelFile> fileInfo = excelRepository.getFileById(id);
+        Optional<ExcelFile> fileInfo = excelRepository.findById(id);
+
         return new FileInputStream(fileInfo.orElseThrow(FileNotFoundException::new).getFileLocation());
     }
 
@@ -64,25 +65,34 @@ public class ExcelServiceImpl implements ExcelService {
 //            log.error("Error in generateFile()", e);
             throw new FileGenerationException(e);
         }
-        excelRepository.saveFile(fileInfo);
+        excelRepository.save(fileInfo);
         log.debug("Excel File Generated : {}", fileInfo);
         return fileInfo;
     }
 
     @Override
     public List<ExcelFile> getExcelList() {
-        return excelRepository.getFiles();
+        return excelRepository.findAll();
     }
 
     @Override
     public ExcelFile deleteFile(String id) throws FileNotFoundException {
-        ExcelFile excelFile = excelRepository.deleteFile(id);
-        if (excelFile == null) {
+        Optional<ExcelFile> excelFile = excelRepository.findById(id);
+        if (excelFile.isEmpty()) {
             throw new FileNotFoundException();
         }
-        File file = new File(excelFile.getFileLocation());
+        File file = new File(excelFile.get().getFileLocation());
         file.delete();
-        return excelFile;
+        excelRepository.deleteById(id);
+        return excelFile.get();
+//        excelFile.remove();
+//        ExcelFile excelFile = excelRepository.deleteById(id);
+//        if (excelFile == null) {
+//            throw new FileNotFoundException();
+//        }
+//        File file = new File(excelFile.getFileLocation());
+//        file.delete();
+
     }
 
     private List<ExcelDataSheet> generateSheet(ExcelRequest request) {
