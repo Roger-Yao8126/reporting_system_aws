@@ -73,7 +73,15 @@ public class ReportController {
         log.debug("Downloaded File:{}", reqId);
     }
 
-//   @DeleteMapping
+   @DeleteMapping("/report/{reqId}")
+   public ResponseEntity deleteReport(@PathVariable String reqId) {
+        try {
+            reportService.deleteRequest(reqId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity(reqId, HttpStatus.OK);
+   }
 //   @PutMapping
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

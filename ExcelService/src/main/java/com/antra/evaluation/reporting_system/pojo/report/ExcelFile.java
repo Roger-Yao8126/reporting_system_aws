@@ -1,7 +1,10 @@
 package com.antra.evaluation.reporting_system.pojo.report;
 
-import java.time.LocalDateTime;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
+import java.time.LocalDateTime;
+@DynamoDBTable(tableName = "ExcelFile")
 public class ExcelFile {
     private String fileId;
     private String fileName;
@@ -9,7 +12,16 @@ public class ExcelFile {
     private String submitter;
     private Long fileSize;
     private String description;
-    private LocalDateTime generatedTime;
+    private String generatedTime;
+
+    @DynamoDBHashKey
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
 
     public Long getFileSize() {
         return fileSize;
@@ -25,14 +37,6 @@ public class ExcelFile {
 
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
-    }
-
-    public String getFileId() {
-        return fileId;
-    }
-
-    public void setFileId(String fileId) {
-        this.fileId = fileId;
     }
 
     public String getFileName() {
@@ -59,11 +63,11 @@ public class ExcelFile {
         this.submitter = submitter;
     }
 
-    public LocalDateTime getGeneratedTime() {
+    public String getGeneratedTime() {
         return generatedTime;
     }
 
-    public void setGeneratedTime(LocalDateTime generatedTime) {
+    public void setGeneratedTime(String generatedTime) {
         this.generatedTime = generatedTime;
     }
 

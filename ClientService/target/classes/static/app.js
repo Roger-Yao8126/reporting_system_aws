@@ -66,7 +66,10 @@ function downloadFile(urlToSend) {
 }
 function showDelete(reqId){
     if(confirm("Are you sure to delete report?")){
-        //alert('Not implemented');
+        var urlToSend='/report/'+reqId;
+        var req=new XMLHttpRequest();
+        req.open("DELETE", urlToSend, true);
+        req.send();
     }
 }
 function actionLinks(ps, es, id) {
