@@ -1,5 +1,6 @@
 package com.antra.evaluation.reporting_system.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.antra.evaluation.reporting_system.exception.FileGenerationException;
 import com.antra.evaluation.reporting_system.pojo.api.ExcelRequest;
 import com.antra.evaluation.reporting_system.pojo.api.MultiSheetExcelRequest;
@@ -11,6 +12,7 @@ import com.antra.evaluation.reporting_system.repo.ExcelRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -22,15 +24,23 @@ import java.util.stream.Collectors;
 public class ExcelServiceImpl implements ExcelService {
 
     private static final Logger log = LoggerFactory.getLogger(ExcelServiceImpl.class);
+
     @Autowired
     private ExcelRepository excelRepository;
     @Autowired
     private ExcelGenerationService excelGenerationService;
 
+    @Autowired
+    private AmazonS3 s3Client;
 
-//    public ExcelServiceImpl(ExcelRepository excelRepository, ExcelGenerationService excelGenerationService) {
+    @Value("${s3.bucket}")
+    private String s3Bucket;
+
+
+//    public ExcelServiceImpl(ExcelRepository excelRepository, ExcelGenerationService excelGenerationService, AmazonS3 s3Client) {
 //        this.excelRepository = excelRepository;
 //        this.excelGenerationService = excelGenerationService;
+//        this.s3Client = s3Client;
 //    }
 
     @Override
@@ -57,7 +67,7 @@ public class ExcelServiceImpl implements ExcelService {
             File generatedFile = excelGenerationService.generateExcelReport(data);
             fileInfo.setFileLocation(generatedFile.getAbsolutePath());
             fileInfo.setFileName(generatedFile.getName());
-            fileInfo.setGeneratedTime(LocalDateTime.now());
+            fileInfo.setGeneratedTime(LocalDateTime.now().toString());
             fileInfo.setSubmitter(request.getSubmitter());
             fileInfo.setFileSize(generatedFile.length());
             fileInfo.setDescription(request.getDescription());

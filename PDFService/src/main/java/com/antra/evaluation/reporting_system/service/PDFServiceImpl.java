@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -39,7 +41,7 @@ public class PDFServiceImpl implements PDFService {
         file.setId("File-" + UUID.randomUUID().toString());
         file.setSubmitter(request.getSubmitter());
         file.setDescription(request.getDescription());
-        file.setGeneratedTime(LocalDateTime.now());
+        file.setGeneratedTime(LocalDateTime.now().toString());
 
         PDFFile generatedFile= generator.generate(request);
 
@@ -59,6 +61,16 @@ public class PDFServiceImpl implements PDFService {
         }
 
         return file;
+    }
+
+    @Override
+    public PDFFile deleteFile(String id) throws FileNotFoundException {
+        Optional<PDFFile> pdfFileOpt = repository.findById(id);
+        if (pdfFileOpt.isEmpty()) {
+            throw new FileNotFoundException();
+        }
+        repository.deleteById(id);
+        return pdfFileOpt.get();
     }
 
 }
