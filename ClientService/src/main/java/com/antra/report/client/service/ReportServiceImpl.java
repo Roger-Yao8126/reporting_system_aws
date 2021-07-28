@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -114,16 +115,6 @@ public class ReportServiceImpl implements ReportService {
 
         executorService.shutdown();
 
-
-//        try {
-//            pdfResponse = rs.postForEntity("http://localhost:9999/pdf", request, PDFResponse.class).getBody();
-//        } catch(Exception e){
-//            log.error("PDF Generation Error (Sync) : e", e);
-//            pdfResponse.setReqId(request.getReqId());
-//            pdfResponse.setFailed(true);
-//        } finally {
-//            updateLocal(pdfResponse);
-//        }
     }
 
     private void updateLocal(ExcelResponse excelResponse) {
@@ -196,6 +187,7 @@ public class ReportServiceImpl implements ReportService {
     public InputStream getFileBodyByReqId(String reqId, FileType type) {
         ReportRequestEntity entity = reportRequestRepo.findById(reqId).orElseThrow(RequestNotFoundException::new);
         if (type == FileType.PDF) {
+
             String fileLocation = entity.getPdfReport().getFileLocation(); // this location is s3 "bucket/key"
             String bucket = fileLocation.split("/")[0];
             String key = fileLocation.split("/")[1];
@@ -204,7 +196,7 @@ public class ReportServiceImpl implements ReportService {
             String fileId = entity.getExcelReport().getFileId();
 //            String fileLocation = entity.getExcelReport().getFileLocation();
 //            try {
-//                return new FileInputStream(fileLocation);// this location is in local, definitely sucks
+//                return new FileInputStream(fileLocation);//
 //            } catch (FileNotFoundException e) {
 //                log.error("No file found", e);
 //            }
@@ -223,6 +215,37 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public void deleteRequest(String reqId) {
+
+        ReportRequestEntity entity = reportRequestRepo.findById(reqId).orElseThrow(RequestNotFoundException::new);
+        FileType[] types = new FileType[] {FileType.EXCEL, FileType.PDF};
+
+        for (FileType type : types) {
+            if (type == FileType.PDF) {
+                // pdf is on s3 bucket
+                String fileLocation = entity.getPdfReport().getFileLocation(); // this location is s3 "bucket/key"
+
+                if (fileLocation != null) {
+                    String bucket = fileLocation.split("/")[0];
+                    String key = fileLocation.split("/")[1];
+                    s3Client.deleteObject(bucket, key);
+                }
+            } else if (type == FileType.EXCEL) {
+                String fileLocation = entity.getExcelReport().getFileLocation(); // this location is s3 "bucket/key"
+                if(fileLocation != null) {
+                    File file = new File(fileLocation);
+
+                    if(file.delete())
+                    {
+                        System.out.println("Excel File deleted successfully");
+                    }
+                    else
+                    {
+                        System.out.println("Failed to delete the excel file");
+                    }
+                }
+
+            }
+        }
         reportRequestRepo.deleteById(reqId);
     }
 }
