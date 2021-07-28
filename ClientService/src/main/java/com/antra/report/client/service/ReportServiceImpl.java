@@ -227,6 +227,7 @@ public class ReportServiceImpl implements ReportService {
                 if (fileLocation != null) {
                     String bucket = fileLocation.split("/")[0];
                     String key = fileLocation.split("/")[1];
+                    System.out.println(fileLocation);
                     s3Client.deleteObject(bucket, key);
                 }
             } else if (type == FileType.EXCEL) {
