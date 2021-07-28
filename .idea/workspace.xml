@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="dc62d4fa-cf8f-4252-851b-34427db17ade" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientService/src/main/java/com/antra/report/client/service/ReportServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ClientService/src/main/java/com/antra/report/client/service/ReportServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientService/target/classes/com/antra/report/client/service/ReportServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ClientService/target/classes/com/antra/report/client/service/ReportServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PDFService/PDFService.iml" beforeDir="false" afterPath="$PROJECT_DIR$/PDFService/PDFService.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClientService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ClientService/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExcelService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ExcelService/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PDFService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/PDFService/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -202,7 +202,7 @@
     <option name="viewStates">
       <list>
         <serviceView>
-          <option name="contentProportion" value="0.03417266" />
+          <option name="contentProportion" value="0.12470024" />
           <treeState>
             <expand>
               <path>
@@ -212,7 +212,7 @@
               <path>
                 <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
                 <item name="Spring Boot" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-                <item name="Running" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="Finished" type="7427dc5b:ServiceModel$ServiceGroupNode" />
               </path>
             </expand>
             <select />
